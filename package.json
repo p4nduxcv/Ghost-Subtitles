@@ -1,0 +1,22 @@
+{
+  "name": "ghost-subtitles",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Feel a conversation the way a beginner in a new language hears it. Live speech-to-text with a fluency slider that drops words, streamed over WebSockets to a second screen.",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "concurrently -n server,client -c blue,magenta \"npm run dev -w server\" \"npm run dev -w client\"",
+    "build": "npm run build -w client",
+    "start": "npm start -w server",
+    "test": "npm test -w server && npm test -w client"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  },
+  "engines": {
+    "node": ">=20.19"
+  }
+}
