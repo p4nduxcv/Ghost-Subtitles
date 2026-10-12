@@ -85,7 +85,7 @@ function commonShareOf(words) {
  * kinds: 'word' (caught), 'gap' (collapsed "…"), 'ghost' (hidden word that
  * keeps its width), 'missed' (shown at Fluent, missed at the compare level).
  */
-export function ghostLine(line, level, compare, gapStyle = 'ellipsis') {
+export function ghostLine(line, level, compare, gapStyle = 'ghost') {
   const words = line.text.split(/\s+/).filter(Boolean);
   const keep = LEVELS[level].keep;
   const compareKeep = LEVELS[compare].keep;

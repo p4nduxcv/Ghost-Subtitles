@@ -1,0 +1,14 @@
+# One-click deploy on Render (free plan supports WebSockets and gives you HTTPS,
+# which the browser needs before it will open the microphone).
+# Render dashboard → New → Blueprint → pick this repo.
+services:
+  - type: web
+    name: ghost-subtitles
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production

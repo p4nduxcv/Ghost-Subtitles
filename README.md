@@ -36,12 +36,50 @@ npm start            # http://localhost:3001
 
 Tests: `npm test`
 
+With Docker: `docker build -t ghost-subtitles . && docker run -p 3001:3001 ghost-subtitles`
+
 ### Notes for the demo
 
 - **Microphone needs a secure origin.** `localhost` works. The second screen never uses the mic, so plain `http://<ip>` is fine for it.
 - **Chrome's speech recognition sends audio to Google's servers**, so the controller needs internet. Firefox has no Web Speech API; use the **Demo** button there.
 - **Speaker A/B:** browsers can't tell voices apart, so whoever runs the controller taps A/B (or presses Space) when the speaker changes.
 - **Rooms:** add `?room=name` to both URLs to run several pairs at once (e.g. `/?room=team3` and `/display?room=team3`).
+
+## Deploy
+
+[![CI](https://github.com/p4nduxcv/Ghost-Subtitles/actions/workflows/ci.yml/badge.svg)](https://github.com/p4nduxcv/Ghost-Subtitles/actions/workflows/ci.yml)
+
+The app is one Node process: it serves the built React app and the WebSocket on the same port. Any host that runs a Docker container and supports WebSockets works. HTTPS matters, because browsers only open the microphone on a secure origin.
+
+### Render (free, recommended for the demo)
+
+1. Sign in at [render.com](https://render.com) with GitHub.
+2. **New → Blueprint** → choose `Ghost-Subtitles`. Render reads `render.yaml` and builds the `Dockerfile`.
+3. Open `https://<your-service>.onrender.com` (controller) and `…/display` (second screen).
+
+Every push to `main` redeploys. The free plan sleeps after about 15 minutes idle, so open the page a minute before the pitch. The transcript lives in memory and resets when the service restarts.
+
+### Docker (any server)
+
+Each push to `main` publishes an image to GitHub Container Registry:
+
+```bash
+docker run -p 3001:3001 ghcr.io/p4nduxcv/ghost-subtitles:latest
+```
+
+Or build it yourself: `docker build -t ghost-subtitles . && docker run -p 3001:3001 ghost-subtitles`
+
+Put it behind HTTPS (Caddy, Nginx, Cloudflare Tunnel) for the microphone to work from other devices. Proxies must forward WebSocket upgrades on `/ws`.
+
+### CI/CD
+
+| Workflow | Runs on | Does |
+| --- | --- | --- |
+| `.github/workflows/ci.yml` → test | every push and PR | `npm ci`, tests, production build on Node 20 and 22 |
+| `.github/workflows/ci.yml` → docker | push to `main` | builds the image and pushes `latest` and the commit SHA to GHCR |
+| Dependabot | weekly / monthly | update PRs for npm, Actions and the Docker base image |
+
+Health check: `GET /health` → `{"ok":true}`.
 
 ## How the fluency filter works
 

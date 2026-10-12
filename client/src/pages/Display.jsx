@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import GhostLogo from '../components/GhostLogo.jsx';
 import CaptionLine from '../components/CaptionLine.jsx';
 import { useSession } from '../lib/useSession.js';
@@ -9,7 +9,6 @@ const VISIBLE_LINES = 3;
 /** The audience screen: big ghost captions that follow the controller's slider. */
 export default function Display({ room }) {
   const { state, status } = useSession(room, 'display');
-  const [gapStyle] = useState(() => new URLSearchParams(location.search).get('gaps') === 'ghost' ? 'ghost' : 'ellipsis');
   const { level, compare } = state;
   const fluent = level === FLUENT;
 
@@ -49,12 +48,11 @@ export default function Display({ room }) {
                 line={line}
                 level={level}
                 compare={compare}
-                gapStyle={gapStyle}
                 className={!state.interim && i === recent.length - 1 ? 'caption-current' : 'caption-past'}
               />
             ))}
             {state.interim && (
-              <CaptionLine line={state.interim} level={level} compare={compare} gapStyle={gapStyle} typing className="caption-current" />
+              <CaptionLine line={state.interim} level={level} compare={compare} typing className="caption-current" />
             )}
           </>
         )}

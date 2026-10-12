@@ -25,7 +25,6 @@ export default function Controller({ room }) {
   const { state, status, send } = useSession(room, 'controller');
   const [speaker, setSpeaker] = useState('A');
   const [lang, setLang] = useState('en-US');
-  const [gapStyle, setGapStyle] = useState('ellipsis');
   const [demoOn, setDemoOn] = useState(false);
   const utteranceRef = useRef(null);
   const stopDemoRef = useRef(null);
@@ -173,10 +172,10 @@ export default function Controller({ room }) {
               ) : (
                 <>
                   {state.lines.map((line) => (
-                    <CaptionLine key={line.id} line={line} level={level} compare={compare} gapStyle={gapStyle} />
+                    <CaptionLine key={line.id} line={line} level={level} compare={compare} />
                   ))}
                   {state.interim && (
-                    <CaptionLine line={state.interim} level={level} compare={compare} gapStyle={gapStyle} typing className="caption-interim" />
+                    <CaptionLine line={state.interim} level={level} compare={compare} typing className="caption-interim" />
                   )}
                 </>
               )}
@@ -203,13 +202,6 @@ export default function Controller({ room }) {
                 <span>Language</span>
                 <select value={lang} onChange={(e) => setLang(e.target.value)}>
                   {LANGUAGES.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-                </select>
-              </label>
-              <label className="field">
-                <span>Gaps</span>
-                <select value={gapStyle} onChange={(e) => setGapStyle(e.target.value)}>
-                  <option value="ellipsis">Ellipsis …</option>
-                  <option value="ghost">Ghost blocks</option>
                 </select>
               </label>
             </div>

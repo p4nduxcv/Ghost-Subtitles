@@ -2,7 +2,7 @@ import { memo } from 'react';
 import { ghostLine } from '../lib/ghost.js';
 
 /** One speaker line rendered through the ghost filter. */
-function CaptionLine({ line, level, compare, gapStyle, typing = false, className = '' }) {
+function CaptionLine({ line, level, compare, gapStyle = 'ghost', typing = false, className = '' }) {
   const { tokens } = ghostLine(line, level, compare, gapStyle);
   return (
     <div className={`caption ${className}`}>
