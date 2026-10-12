@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "node --watch src/index.js",
     "start": "NODE_ENV=production node src/index.js",
-    "test": "node --test \"test/**/*.test.js\""
+    "test": "node --test"
   },
   "dependencies": {
     "express": "^5.2.1",
