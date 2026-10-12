@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ---- Build: install everything, run tests, build the React app ----
-FROM node:22-slim AS build
+FROM node:26-slim AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 COPY server/package.json server/
@@ -11,7 +11,7 @@ COPY . .
 RUN npm test && npm run build
 
 # ---- Runtime: server dependencies + built client only ----
-FROM node:22-alpine AS runtime
+FROM node:26-alpine AS runtime
 ENV NODE_ENV=production \
     PORT=3001
 WORKDIR /app
