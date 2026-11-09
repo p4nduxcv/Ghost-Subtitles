@@ -14,7 +14,7 @@
     "test": "npm test -w server && npm test -w client"
   },
   "devDependencies": {
-    "concurrently": "^10.0.5"
+    "concurrently": "^10.0.6"
   },
   "engines": {
     "node": ">=20.19"
